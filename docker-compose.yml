@@ -1,0 +1,16 @@
+version: '3'
+services:
+  skinsight-frontend:
+    container_name: skinsight-frontend
+    image: ghcr.io/florentkaram/skinsight-frontend/skinsight-frontend:latest
+    restart: unless-stopped
+    labels:
+      traefik.enable: true
+      traefik.http.routers.frontend.entrypoints: websecure
+      traefik.http.routers.frontend.tls: true
+      traefik.http.routers.frontend.rule: Host(`sample-restaurant.com`) || Host(`www.sample-restaurant.com`)
+    networks:
+      - skinsight-frontend
+networks:
+  skinsight-frontend:
+    external : true

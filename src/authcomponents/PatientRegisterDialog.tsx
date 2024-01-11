@@ -47,7 +47,6 @@ function RegisterDialog({ handleClose, setAuthType }: ChildProps) {
           <Box display="flex" flexDirection="column" gap={2}>
             <Box>
               <TextField
-                autoFocus
                 sx={{ width: "calc(50% - 1)", mr: 2 }}
                 id="lastName"
                 label="Nom"
@@ -97,8 +96,6 @@ function RegisterDialog({ handleClose, setAuthType }: ChildProps) {
                           "Date de naissance requise",
                       },
                     }}
-                    // value={value}
-                    // onChange={(newValue) => setValue(newValue)}
                   />
                 </LocalizationProvider>
               </Box>
@@ -110,13 +107,11 @@ function RegisterDialog({ handleClose, setAuthType }: ChildProps) {
                   labelId="sex"
                   id="sex"
                   variant="standard"
-                  //   value={age}
                   label="Age"
                   value={formik.values.sex}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   error={formik.touched.sex && Boolean(formik.errors.sex)}
-                  //   onChange={handleChange}
                 >
                   <MenuItem value={Sex.MALE}>Homme</MenuItem>
                   <MenuItem value={Sex.FEMALE}>Femme</MenuItem>

@@ -5,19 +5,34 @@ export interface UserData {
   lastName: string;
 }
 
-export interface User extends UserData {
+export interface UserForm {
   email: string;
   password: string;
   sex: Sex;
   dateOfBirth: Date;
   address: string;
   city: string;
-  zipCode: string;
-  secuNumber: string | undefined;
-  rppsNumber: string | undefined;
+  zipCode: number;
+}
+
+interface UserMetaData {
   createdAt: string | undefined;
   updatedAt: string | undefined;
 }
+
+interface SecuNumber {
+  secuNumber: number | undefined;
+}
+
+interface RppsNumber {
+  rppsNumber: number | undefined;
+}
+
+export type User = UserData & UserForm & SecuNumber & RppsNumber & UserMetaData;
+
+export type PatientUser = UserData & UserForm & SecuNumber;
+
+export type ProfessionalUser = UserData & UserForm & RppsNumber;
 
 export enum Role {
   ADMIN = "ADMIN",

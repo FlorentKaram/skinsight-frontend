@@ -12,7 +12,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { AuthType, Sex } from "../models/user.model";
+import { AuthType, Role, Sex } from "../models/user.model";
 import { useFormik } from "formik";
 import { patientRegisterValidationSchema } from "./validation";
 
@@ -24,19 +24,32 @@ interface ChildProps {
 function RegisterDialog({ handleClose, setAuthType }: ChildProps) {
   const formik = useFormik({
     initialValues: {
-      lastName: "",
+      id: "0",
+      role: Role.PATIENT,
       firstName: "",
-      dateOfBirth: null,
-      sex: Sex.MALE,
-      address: "",
-      secuNumber: "",
+      lastName: "",
       email: "",
       password: "",
+      sex: Sex.MALE,
+      dateOfBirth: null,
+      address: "",
+      city: "toulouse",
+      zipCode: 31000,
+      secuNumber: "",
     },
     validationSchema: patientRegisterValidationSchema,
     onSubmit: (values) => {
-      console.log(JSON.stringify(values, null, 2));
+      console.log("working");
     },
+    // validate: (values) => {
+    //   const errors: any = {};
+    //   console.log(values);
+
+    //   console.log(formik.isSubmitting, formik.isValidating);
+    //   formik.validateForm().then((errors) => {
+    //     console.log(errors);
+    //   });
+    // },
   });
 
   return (
@@ -127,7 +140,7 @@ function RegisterDialog({ handleClose, setAuthType }: ChildProps) {
                 label="Adresse"
                 fullWidth
                 multiline
-                rows={4}
+                rows={2}
                 variant="standard"
                 value={formik.values.address}
                 onChange={formik.handleChange}
@@ -154,6 +167,7 @@ function RegisterDialog({ handleClose, setAuthType }: ChildProps) {
               fullWidth
               id="email"
               label="Email"
+              type="email"
               variant="standard"
               value={formik.values.email}
               onChange={formik.handleChange}

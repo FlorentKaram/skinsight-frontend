@@ -1,23 +1,27 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
-import { userCyril } from "./models/auth";
+import { defaultUser } from "./models/auth";
 import { AuthContext } from "./contexts/AuthContext";
 import { skinSightTheme } from "./theme/theme";
 import { ThemeProvider } from "@mui/material";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 function App() {
-  const [users, setUsers] = useState([userCyril]);
+  const queryClient = new QueryClient();
+  const [user, setUser] = useState(defaultUser);
   const [isConnected, setIsConnected] = useState(false);
 
   return (
     <ThemeProvider theme={skinSightTheme}>
-      <AuthContext.Provider
-        value={{ users, setUsers, isConnected, setIsConnected }}
-      >
-        <div style={{ height: "100vh", width: "100vw" }}>
-          <Outlet />
-        </div>
-      </AuthContext.Provider>
+      <QueryClientProvider client={queryClient}>
+        <AuthContext.Provider
+          value={{ user, setUser, isConnected, setIsConnected }}
+        >
+          <div style={{ height: "100vh", width: "100vw" }}>
+            <Outlet />
+          </div>
+        </AuthContext.Provider>
+      </QueryClientProvider>
     </ThemeProvider>
   );
 }

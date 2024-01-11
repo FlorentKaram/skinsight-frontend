@@ -1,16 +1,17 @@
 import { createContext, Dispatch, SetStateAction } from "react";
-import { User } from "../models/auth";
+import { User } from "../models/user.model";
+import { defaultUser } from "../models/auth";
 
 interface AuthContextType {
-  users: User[];
-  setUsers: Dispatch<SetStateAction<User[]>>;
+  user: User;
+  setUser: Dispatch<SetStateAction<User>>;
   isConnected: boolean;
   setIsConnected: Dispatch<SetStateAction<boolean>>;
 }
 
 const defaultAuthContext = {
-  users: [{ username: "cyril", password: "pwd" }],
-  setUsers: () => {},
+  user: defaultUser,
+  setUser: () => {},
   isConnected: true,
   setIsConnected: () => {},
 };

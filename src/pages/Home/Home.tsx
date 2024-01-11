@@ -10,16 +10,6 @@ function Home() {
   const [open, setOpen] = useState(false);
   const [role, setRole] = useState<Role>(Role.PATIENT);
   const [authType, setAuthType] = useState<AuthType>(AuthType.LOGIN);
-  // const { data } = useQuery("repoData", () =>
-  //   fetch("https://sample-restaurant.com/backskinsight/users").then((res) =>
-  //     res.json()
-  //   )
-  // );
-
-  // if (data) {
-  //   console.log("users", data);
-  // }
-
   const handleClickOpen = () => {
     setOpen(true);
   };

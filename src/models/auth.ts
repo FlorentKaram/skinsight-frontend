@@ -1,11 +1,21 @@
-export interface User {
-  username: string;
-  password: string;
-}
+import { Role, Sex, User } from "./user.model";
 
-export const userCyril: User = {
-  username: "cyril",
-  password: "pwd",
+export const defaultUser: User = {
+  id: "",
+  role: Role.PATIENT,
+  sex: Sex.MALE,
+  password: "",
+  firstName: "",
+  lastName: "",
+  email: "",
+  dateOfBirth: new Date(),
+  address: "",
+  city: "",
+  zipCode: "",
+  secuNumber: "",
+  rppsNumber: "",
+  createdAt: "",
+  updatedAt: "",
 };
 
 export enum EMODE {

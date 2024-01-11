@@ -2,10 +2,23 @@ import { Box, Button, Grid, Typography, useTheme } from "@mui/material";
 import React, { useState } from "react";
 import { IMAGES } from "../../assets/images";
 import AuthDialog from "../../authcomponents/AuthDialog";
+import { useQuery } from "react-query";
+import { AuthType, Role } from "../../models/user.model";
 
 function Home() {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
+  const [role, setRole] = useState<Role>(Role.PATIENT);
+  const [authType, setAuthType] = useState<AuthType>(AuthType.LOGIN);
+  // const { data } = useQuery("repoData", () =>
+  //   fetch("https://sample-restaurant.com/backskinsight/users").then((res) =>
+  //     res.json()
+  //   )
+  // );
+
+  // if (data) {
+  //   console.log("users", data);
+  // }
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -40,7 +53,16 @@ function Home() {
           </Grid>
           <Grid container justifyContent={"flex-end"} item xs={6}>
             <Grid item>
-              <Button variant="outlined" color="info" sx={{ m: 2 }}>
+              <Button
+                variant="outlined"
+                color="info"
+                sx={{ m: 2 }}
+                onClick={() => {
+                  setRole(Role.GENERALIST);
+                  setAuthType(AuthType.REGISTER);
+                  handleClickOpen();
+                }}
+              >
                 Vous êtes practicien ?
               </Button>
             </Grid>
@@ -52,10 +74,21 @@ function Home() {
                   color: "white",
                   backgroundColor: theme.palette.primary.main,
                 }}
-                onClick={handleClickOpen}
+                onClick={() => {
+                  setRole(Role.PATIENT);
+                  setAuthType(AuthType.LOGIN);
+                  handleClickOpen();
+                }}
               >
                 Se connecter
               </Button>
+              <AuthDialog
+                open={open}
+                role={role}
+                authType={authType}
+                setAuthType={setAuthType}
+                handleClose={handleClose}
+              />
             </Grid>
           </Grid>
         </Grid>
@@ -125,7 +158,6 @@ function Home() {
           <Box sx={{ py: 2 }}>{""}</Box>
         </Box>
       </Grid>
-      <AuthDialog open={open} handleClose={handleClose} />
     </Box>
   );
 }

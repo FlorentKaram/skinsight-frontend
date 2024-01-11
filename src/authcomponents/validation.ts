@@ -29,7 +29,9 @@ export const professionalRegisterValidationSchema = object({
   dateOfBirth: date().required("Date de naissance requise"),
   sex: mixed<Sex>().oneOf(Object.values(Sex)).required("Sexe requis"),
   address: string().required("Adresse requise"),
-  rppsNumber: string().required("Numéro RPPS requis"),
+  rppsNumber: number()
+    .typeError("Seul les nombres sont acceptés")
+    .required("Numéro RPPS requis"),
   email: string().email("Email non valide").required("Email requis"),
   password: string()
     .min(8, "Le mot de passe doit contenir au moins 8 caractères")

@@ -8,6 +8,7 @@ import { Box, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import { loginValidationSchema } from "./validation";
 import { AuthType } from "../models/user.model";
+import { useAuth } from "../router/hooks/useAuth";
 
 interface ChildProps {
   handleClose: () => void;
@@ -15,13 +16,15 @@ interface ChildProps {
 }
 
 function LoginDialog({ handleClose, setAuthType }: ChildProps) {
+  const { login } = useAuth();
   const formik = useFormik({
     initialValues: {
-      email: "foobar@example.com",
-      password: "foobar",
+      email: "",
+      password: "",
     },
     validationSchema: loginValidationSchema,
     onSubmit: (values) => {
+      login(values.email, values.password);
       console.log(JSON.stringify(values, null, 2));
     },
   });
@@ -32,7 +35,6 @@ function LoginDialog({ handleClose, setAuthType }: ChildProps) {
         <DialogTitle>Connexion</DialogTitle>
         <DialogContent>
           <TextField
-            autoFocus
             fullWidth
             required
             type="email"

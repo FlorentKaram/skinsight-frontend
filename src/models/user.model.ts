@@ -1,11 +1,14 @@
-export interface User {
+export interface UserData {
   id: string;
   role: Role;
-  sex: Sex;
-  password: string;
   firstName: string;
   lastName: string;
+}
+
+export interface User extends UserData {
   email: string;
+  password: string;
+  sex: Sex;
   dateOfBirth: Date;
   address: string;
   city: string;

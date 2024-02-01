@@ -12,9 +12,10 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { AuthType, Role, Sex } from "../models/user.model";
+import { AuthType, PatientUser, Role, Sex } from "../models/user.model";
 import { useFormik } from "formik";
 import { patientRegisterValidationSchema } from "./validation";
+import { patientRegisterService } from "../services/auth.services";
 
 interface ChildProps {
   handleClose: () => void;
@@ -31,25 +32,16 @@ function RegisterDialog({ handleClose, setAuthType }: ChildProps) {
       email: "",
       password: "",
       sex: Sex.MALE,
-      dateOfBirth: null,
+      dateOfBirth: null as unknown as Date,
       address: "",
-      city: "toulouse",
-      zipCode: 31000,
-      secuNumber: "",
+      city: "",
+      zipCode: "" as unknown as number,
+      secuNumber: "" as unknown as number,
     },
     validationSchema: patientRegisterValidationSchema,
     onSubmit: (values) => {
-      console.log("working");
+      patientRegisterService(values);
     },
-    // validate: (values) => {
-    //   const errors: any = {};
-    //   console.log(values);
-
-    //   console.log(formik.isSubmitting, formik.isValidating);
-    //   formik.validateForm().then((errors) => {
-    //     console.log(errors);
-    //   });
-    // },
   });
 
   return (
@@ -163,6 +155,30 @@ function RegisterDialog({ handleClose, setAuthType }: ChildProps) {
               }
               helperText={formik.touched.secuNumber && formik.errors.secuNumber}
             />
+            <Box>
+              <TextField
+                sx={{ width: "calc(50% - 1)", mr: 2 }}
+                id="zipcode"
+                label="Code postal"
+                variant="standard"
+                value={formik.values.zipCode}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.zipCode && Boolean(formik.errors.zipCode)}
+                helperText={formik.touched.zipCode && formik.errors.zipCode}
+              />
+              <TextField
+                sx={{ width: "calc(50% - 1)" }}
+                id="city"
+                label="Ville"
+                variant="standard"
+                value={formik.values.city}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.city && Boolean(formik.errors.city)}
+                helperText={formik.touched.city && formik.errors.city}
+              />
+            </Box>
             <TextField
               fullWidth
               id="email"

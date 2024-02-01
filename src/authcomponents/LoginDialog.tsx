@@ -25,7 +25,6 @@ function LoginDialog({ handleClose, setAuthType }: ChildProps) {
     validationSchema: loginValidationSchema,
     onSubmit: (values) => {
       login(values.email, values.password);
-      console.log(JSON.stringify(values, null, 2));
     },
   });
 

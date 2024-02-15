@@ -9,7 +9,11 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import MyRequestsDialog from "./MyRequestsDialog";
+import CreateRequestDialog from "./CreateRequestDialog";
+import { useQuery } from "react-query";
+import { consulatationsServices } from "../../services/consultations.services";
+import { ConsultationForm } from "../../models/consultation.model";
+import VisualizeRequestDialog from "./VisualizeRequestDialog";
 
 function MyRequests() {
   const theme = useTheme();
@@ -24,22 +28,45 @@ function MyRequests() {
     "Dr Watson",
   ]);
 
-  const [open, setOpen] = useState(false);
-  const handleClickOpen = () => {
-    setOpen(true);
+  // Dialog
+  const [openCreationDialog, setOpenCreationDialog] = useState(false);
+  const handleClickOpenCreationDialog = () => {
+    setOpenCreationDialog(true);
   };
-  const handleClose = () => {
-    setOpen(false);
+  const handleCloseCreationDialog = () => {
+    setOpenCreationDialog(false);
+  };
+  const [openVisualizationDialog, setOpenVisualizationDialog] = useState(false);
+  const handleClickOpenVisualizationDialog = () => {
+    setOpenVisualizationDialog(true);
+  };
+  const handleCloseVisualizationDialog = () => {
+    setOpenVisualizationDialog(false);
   };
 
-  return (
+  // Fetch data
+  const { isLoading, error, data } = useQuery("consultations", () =>
+    consulatationsServices.getConsultations().then((res) => {
+      return res.data as ConsultationForm[];
+    })
+  );
+
+  if (isLoading) return "Loading...";
+
+  if (error) return "An error has occurred: ";
+
+  return data ? (
     <Box>
       <h2>Historique</h2>
       <List sx={{ height: 310, overflow: "auto" }}>
-        {doctors.map((doctor, i) => (
+        {data.map((consultation, i) => (
           <ListItem
             secondaryAction={
-              <IconButton edge="end" aria-label="view">
+              <IconButton
+                edge="end"
+                aria-label="view"
+                onClick={handleClickOpenVisualizationDialog}
+              >
                 <VisibilityIcon />
               </IconButton>
             }
@@ -50,7 +77,12 @@ function MyRequests() {
             }}
             key={i}
           >
-            <ListItemText primary={doctor} />
+            <VisualizeRequestDialog
+              open={openVisualizationDialog}
+              handleClose={handleCloseVisualizationDialog}
+              consultation={consultation}
+            />
+            <ListItemText primary={consultation.object} />
           </ListItem>
         ))}
       </List>
@@ -67,16 +99,19 @@ function MyRequests() {
               mt: 4,
             },
           ]}
-          onClick={handleClickOpen}
+          onClick={handleClickOpenCreationDialog}
         >
           <Box sx={{ fontSize: 17, fontWeight: 600 }}>
             <p>DEPOSER UNE NOUVELLE PHOTO</p>
           </Box>
         </Button>
-        <MyRequestsDialog open={open} handleClose={handleClose} />
+        <CreateRequestDialog
+          open={openCreationDialog}
+          handleClose={handleCloseCreationDialog}
+        />
       </Box>
     </Box>
-  );
+  ) : null;
 }
 
 export default MyRequests;

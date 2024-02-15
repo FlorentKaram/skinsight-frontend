@@ -11,7 +11,7 @@ interface AuthContextType {
 }
 
 const defaultAuthContext = {
-  id: "0",
+  userId: "0",
   role: Role.PATIENT,
   firstName: "",
   lastName: "",

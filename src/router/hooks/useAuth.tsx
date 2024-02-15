@@ -17,7 +17,7 @@ export interface JwtState {
 
 export const AuthProvider = ({ children }: { children: ReactElement }) => {
   const [user, setUser] = useState<UserCookie | null>({
-    id: "0",
+    userId: "0",
     role: Role.PATIENT,
     firstName: "",
     lastName: "",
@@ -33,8 +33,6 @@ export const AuthProvider = ({ children }: { children: ReactElement }) => {
   //Intercept all requests and provide the token if it exists
   axiosInstance.interceptors.request.use(
     (config) => {
-      console.log("intercepting request :", user);
-
       if (user && user.access_token) {
         config.headers["Authorization"] = `Bearer ${user.access_token}`;
       }
@@ -54,15 +52,12 @@ export const AuthProvider = ({ children }: { children: ReactElement }) => {
       const originalConfig = err.config;
       if (err.response) {
         // Access Token was expired
-        console.log("error response interceptor", err.response.data);
 
         if (
           err.response.status === 401 &&
           !originalConfig._retry &&
           isAuthenticated
         ) {
-          console.log("refreshing token");
-
           originalConfig._retry = true;
           try {
             const response = await authServices.getAccessToken();

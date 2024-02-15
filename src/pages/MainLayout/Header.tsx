@@ -1,7 +1,6 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { useNavigate } from "react-router";
 import { indigo } from "@mui/material/colors";
-import AdjustIcon from "@mui/icons-material/Adjust";
 
 function Header() {
   const navigate = useNavigate();

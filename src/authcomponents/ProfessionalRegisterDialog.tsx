@@ -25,7 +25,7 @@ interface ChildProps {
 function ProfessionalRegisterDialog({ handleClose, setAuthType }: ChildProps) {
   const formik = useFormik({
     initialValues: {
-      id: "0",
+      userId: "0",
       role: Role.GENERALIST,
       lastName: "",
       firstName: "",

@@ -19,7 +19,7 @@ interface ChildProps {
   handleClose: () => void;
 }
 
-function MyRequestsDialog({ open, handleClose }: ChildProps) {
+function CreateRequestDialog({ open, handleClose }: ChildProps) {
   const [postImage, setPostImage] = useState({
     myFile: "",
   });
@@ -56,7 +56,10 @@ function MyRequestsDialog({ open, handleClose }: ChildProps) {
   const handleFileUpload = async (e: any) => {
     const file = e.target.files[0];
     const base64 = (await convertToBase64(file)) as string;
+    console.log(base64);
+
     setPostImage({ ...postImage, myFile: base64 });
+    e.target.value = null;
   };
 
   const VisuallyHiddenInput = styled("input")({
@@ -121,7 +124,7 @@ function MyRequestsDialog({ open, handleClose }: ChildProps) {
           </Button>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Annuler</Button>
+          <Button onClick={handleClose}>Auler</Button>
           <Button variant="contained" type="submit">
             Valider
           </Button>
@@ -131,4 +134,4 @@ function MyRequestsDialog({ open, handleClose }: ChildProps) {
   );
 }
 
-export default MyRequestsDialog;
+export default CreateRequestDialog;

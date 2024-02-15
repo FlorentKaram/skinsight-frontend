@@ -10,7 +10,7 @@ export const loginValidationSchema = object({
 
 export const patientRegisterValidationSchema: ObjectSchema<PatientUser> =
   object({
-    id: string().defined(),
+    userId: string().defined(),
     role: mixed<Role>().oneOf(Object.values(Role)).defined(),
     lastName: string().required("Nom requis"),
     firstName: string().required("Prénom requis"),
@@ -30,7 +30,7 @@ export const patientRegisterValidationSchema: ObjectSchema<PatientUser> =
 
 export const professionalRegisterValidationSchema: ObjectSchema<ProfessionalUser> =
   object({
-    id: string().defined(),
+    userId: string().defined(),
     role: mixed<Role>().oneOf(Object.values(Role)).defined(),
     lastName: string().required("Nom requis"),
     firstName: string().required("Prénom requis"),

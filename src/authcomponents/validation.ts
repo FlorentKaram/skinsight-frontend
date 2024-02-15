@@ -1,11 +1,5 @@
 import { ObjectSchema, date, mixed, number, object, string } from "yup";
-import {
-  PatientUser,
-  ProfessionalUser,
-  Role,
-  Sex,
-  User,
-} from "../models/user.model";
+import { PatientUser, ProfessionalUser, Role, Sex } from "../models/user.model";
 
 export const loginValidationSchema = object({
   email: string().email("Email non valide").required("Email requis"),

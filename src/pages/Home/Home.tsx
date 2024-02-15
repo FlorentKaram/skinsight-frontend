@@ -1,8 +1,7 @@
 import { Box, Button, Grid, Typography, useTheme } from "@mui/material";
-import React, { useState } from "react";
+import { useState } from "react";
 import { IMAGES } from "../../assets/images";
 import AuthDialog from "../../authcomponents/AuthDialog";
-import { useQuery } from "react-query";
 import { AuthType, Role } from "../../models/user.model";
 
 function Home() {

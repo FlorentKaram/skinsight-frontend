@@ -1,9 +1,5 @@
 import axios from "axios";
-import {
-  PatientUser,
-  ProfessionalUser,
-  UserCookie,
-} from "../models/user.model";
+import { PatientUser, ProfessionalUser } from "../models/user.model";
 
 export const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,

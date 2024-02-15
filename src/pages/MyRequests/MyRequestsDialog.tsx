@@ -10,7 +10,7 @@ import {
   styled,
 } from "@mui/material";
 import { useFormik } from "formik";
-import React, { useState } from "react";
+import { useState } from "react";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import { consulatationsServices } from "../../services/consultations.services";
 

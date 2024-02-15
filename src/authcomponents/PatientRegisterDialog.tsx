@@ -12,7 +12,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { AuthType, PatientUser, Role, Sex } from "../models/user.model";
+import { AuthType, Role, Sex } from "../models/user.model";
 import { useFormik } from "formik";
 import { patientRegisterValidationSchema } from "./validation";
 import { authServices } from "../services/auth.services";

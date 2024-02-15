@@ -9,7 +9,6 @@ import { useFormik } from "formik";
 import { loginValidationSchema } from "./validation";
 import { AuthType } from "../models/user.model";
 import { useAuth } from "../router/hooks/useAuth";
-import { redirect } from "react-router-dom";
 
 interface ChildProps {
   handleClose: () => void;

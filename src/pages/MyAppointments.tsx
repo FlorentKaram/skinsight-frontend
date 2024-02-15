@@ -1,18 +1,16 @@
 import {
   Box,
-  Button,
   Chip,
-  IconButton,
   List,
   ListItem,
   ListItemText,
   useTheme,
 } from "@mui/material";
-import React, { useState } from "react";
+import { useState } from "react";
 
 function MyAppointments() {
   const theme = useTheme();
-  const [doctors, setDoctors] = useState<string[]>([
+  const [doctors] = useState<string[]>([
     "Dr Maboul",
     "Dr House",
     "Dr Who",

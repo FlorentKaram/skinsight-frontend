@@ -9,12 +9,11 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { authServices } from "../../services/auth.services";
 import MyRequestsDialog from "./MyRequestsDialog";
 
 function MyRequests() {
   const theme = useTheme();
-  const [doctors, setDoctors] = useState<string[]>([
+  const [doctors] = useState<string[]>([
     "Dr Maboul",
     "Dr House",
     "Dr Who",

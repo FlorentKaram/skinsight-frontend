@@ -1,0 +1,45 @@
+name: skinsight-frontend
+
+on:
+  push:
+    branches: ["main"]
+    
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: publish to registery
+        uses: VaultVulp/gp-docker-action@1.2.0
+        with:
+          github-token: ${{ secrets.GIT_TOKEN }}
+          image-name: skinsight-frontend
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run a one-line script
+        run: echo Hello word
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+    - name: SSH Execute Commands
+      uses: JimCronqvist/action-ssh@0.1.1
+      with:
+        hosts: ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}
+        privateKey: ${{ secrets.SSH_KEY }}
+        debug: false
+        command: | 
+          cd /projects/skinsight/skinsight-frontend/
+          docker login ghcr.io -u ${{ secrets.GIT_USERNAME }} -p ${{ secrets.GIT_TOKEN }}
+          git remote set-url origin https://${{ secrets.GIT_USERNAME }}:${{ secrets.GIT_TOKEN }}@github.com/FlorentKaram/skinsight-frontend.git
+          git pull
+          docker stop skinsight-frontend
+          docker rm skinsight-frontend
+          docker image rm -f ghcr.io/florentkaram/skinsight-frontend/skinsight-frontend
+          docker compose up -d

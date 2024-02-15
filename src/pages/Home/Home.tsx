@@ -32,7 +32,7 @@ function Home() {
         <Grid
           container
           item
-          justifyContent={"space-around"}
+          justifyContent={"space-between"}
           alignItems={"center"}
           sx={{
             backgroundColor: theme.palette.secondary.main,
@@ -140,6 +140,11 @@ function Home() {
                 color: theme.palette.common.white,
               },
             ]}
+            onClick={() => {
+              setRole(Role.PATIENT);
+              setAuthType(AuthType.LOGIN);
+              handleClickOpen();
+            }}
           >
             <Box sx={{ fontSize: 17, fontWeight: 600 }}>
               <p>DEMARRER UNE PRE-CONSULTATION</p>

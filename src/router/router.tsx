@@ -4,35 +4,33 @@ import MainLayout from "../pages/MainLayout/MainLayout";
 import { ProtectedRoute } from "./ProtectedRoutes";
 import Home from "../pages/Home/Home";
 import { AuthLayout } from "./AuthLayout";
-
-const getUserData = () =>
-  new Promise((resolve) =>
-    setTimeout(() => {
-      const user = window.localStorage.getItem("user");
-      resolve(user);
-    }, 3000)
-  );
+import MyRequests from "../pages/MyRequests/MyRequests";
+import Profile from "../pages/Profile";
+import MyAppointments from "../pages/MyAppointments";
 
 export const router = createBrowserRouter([
   {
     element: <AuthLayout />,
-    loader: () => defer({ userPromise: getUserData() }),
     children: [
       {
         element: <App />,
         path: "/",
         children: [
           {
-            path: "home",
+            path: "/",
             element: <Home />,
           },
           {
-            path: "/",
             element: (
               <ProtectedRoute>
                 <MainLayout />
               </ProtectedRoute>
             ),
+            children: [
+              { element: <MyRequests />, path: "my-requests" },
+              { element: <MyAppointments />, path: "my-appointments" },
+              { element: <Profile />, path: "my-profile" },
+            ],
           },
         ],
       },

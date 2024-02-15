@@ -5,7 +5,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { Box, Dialog, FormHelperText, Typography } from "@mui/material";
-import { AuthType, Sex } from "../models/user.model";
+import { AuthType, Role, Sex } from "../models/user.model";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -15,6 +15,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { professionalRegisterValidationSchema } from "./validation";
 import { useFormik } from "formik";
+import { authServices } from "../services/auth.services";
 
 interface ChildProps {
   handleClose: () => void;
@@ -24,18 +25,22 @@ interface ChildProps {
 function ProfessionalRegisterDialog({ handleClose, setAuthType }: ChildProps) {
   const formik = useFormik({
     initialValues: {
+      id: "0",
+      role: Role.GENERALIST,
       lastName: "",
       firstName: "",
-      dateOfBirth: null,
+      dateOfBirth: null as unknown as Date,
       sex: Sex.MALE,
       address: "",
-      rppsNumber: "",
+      rppsNumber: "" as unknown as number,
       email: "",
       password: "",
+      zipCode: "" as unknown as number,
+      city: "",
     },
     validationSchema: professionalRegisterValidationSchema,
     onSubmit: (values) => {
-      console.log(JSON.stringify(values, null, 2));
+      authServices.professionalRegisterService(values);
     },
   });
 
@@ -129,6 +134,30 @@ function ProfessionalRegisterDialog({ handleClose, setAuthType }: ChildProps) {
               onBlur={formik.handleBlur}
               error={formik.touched.address && Boolean(formik.errors.address)}
               helperText={formik.touched.address && formik.errors.address}
+            />
+          </Box>
+          <Box>
+            <TextField
+              sx={{ width: "calc(50% - 1)", mr: 2 }}
+              id="zipCode"
+              label="Code postal"
+              variant="standard"
+              value={formik.values.zipCode}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.zipCode && Boolean(formik.errors.zipCode)}
+              helperText={formik.touched.zipCode && formik.errors.zipCode}
+            />
+            <TextField
+              sx={{ width: "calc(50% - 1)" }}
+              id="city"
+              label="Ville"
+              variant="standard"
+              value={formik.values.city}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.city && Boolean(formik.errors.city)}
+              helperText={formik.touched.city && formik.errors.city}
             />
           </Box>
           <TextField

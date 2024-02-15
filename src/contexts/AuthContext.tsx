@@ -1,9 +1,11 @@
 import { createContext } from "react";
-import { Role, UserData } from "../models/user.model";
+import { Role, UserCookie, UserData } from "../models/user.model";
 
 interface AuthContextType {
-  user: { data: UserData; token: string };
-  setUser: (user: { data: UserData; token: string }) => void;
+  user: UserCookie | null;
+  setUser: (user: UserCookie) => void;
+  isAuthenticated: boolean;
+  setIsAuthenticated: (isAuthenticated: boolean) => void;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
 }
@@ -16,8 +18,10 @@ const defaultAuthContext = {
 };
 
 export const AuthContext = createContext<AuthContextType>({
-  user: { data: defaultAuthContext, token: "" },
+  user: { ...defaultAuthContext, access_token: "" },
   setUser: () => {},
+  isAuthenticated: false,
+  setIsAuthenticated: () => {},
   login: async (email: string, password: string) => {},
   logout: async () => {},
 });

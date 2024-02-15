@@ -5,6 +5,8 @@ export interface UserData {
   lastName: string;
 }
 
+export type UserCookie = UserData & { access_token: string };
+
 export interface UserForm {
   email: string;
   password: string;

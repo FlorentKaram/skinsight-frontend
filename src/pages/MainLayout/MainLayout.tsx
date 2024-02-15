@@ -6,7 +6,7 @@ function MainLayout() {
   return (
     <Box>
       <Header />
-      <Box sx={{ pt: 15, px: 5 }}>
+      <Box sx={{ pt: 10, px: "15%" }}>
         <Outlet />
       </Box>
     </Box>

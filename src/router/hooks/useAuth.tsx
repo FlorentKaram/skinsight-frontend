@@ -1,8 +1,9 @@
-import { ReactElement, useContext, useMemo } from "react";
-import { useLocalStorage } from "./useLocalStorage";
-import { jwtDecode } from "jwt-decode";
+import { ReactElement, useContext, useMemo, useState } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
-import { loginService } from "../../services/auth.services";
+import { authServices, axiosInstance } from "../../services/auth.services";
+import { Role, UserCookie } from "../../models/user.model";
+import { useNavigate } from "react-router-dom";
+import { useLocalStorage } from "./useLocalStorage";
 
 // const httpHost = process.env.REACT_APP_HTTP_HOST;
 
@@ -15,25 +16,97 @@ export interface JwtState {
 }
 
 export const AuthProvider = ({ children }: { children: ReactElement }) => {
-  const [user, setUser] = useLocalStorage("user", null);
+  const [user, setUser] = useState<UserCookie | null>({
+    id: "0",
+    role: Role.PATIENT,
+    firstName: "",
+    lastName: "",
+    access_token: "",
+  });
 
+  const [isAuthenticated, setIsAuthenticated] = useLocalStorage(
+    "isAuthenticated",
+    false
+  );
+  const navigate = useNavigate();
+
+  //Intercept all requests and provide the token if it exists
+  axiosInstance.interceptors.request.use(
+    (config) => {
+      console.log("intercepting request :", user);
+
+      if (user && user.access_token) {
+        config.headers["Authorization"] = `Bearer ${user.access_token}`;
+      }
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
+    }
+  );
+
+  //Intercept all responses and refresh the token if it's expired
+  axiosInstance.interceptors.response.use(
+    (res) => {
+      return res;
+    },
+    async (err) => {
+      const originalConfig = err.config;
+      if (err.response) {
+        // Access Token was expired
+        console.log("error response interceptor", err.response.data);
+
+        if (
+          err.response.status === 401 &&
+          !originalConfig._retry &&
+          isAuthenticated
+        ) {
+          console.log("refreshing token");
+
+          originalConfig._retry = true;
+          try {
+            const response = await authServices.getAccessToken();
+            const accessToken = response.data;
+            if (user) {
+              setUser({ ...user, access_token: accessToken });
+            }
+            axiosInstance.defaults.headers.common[
+              "Authorization"
+            ] = `Bearer ${accessToken}`;
+            return axiosInstance(originalConfig);
+          } catch (_error: any) {
+            if (_error.response && _error.response.data) {
+              return Promise.reject(_error.response.data);
+            }
+            return Promise.reject(_error);
+          }
+        }
+        if (err.response.status === 403 && err.response.data) {
+          return Promise.reject(err.response.data);
+        }
+      }
+      return Promise.reject(err);
+    }
+  );
+
+  // Login
   const login = async (email: string, password: string) => {
-    loginService(email, password).then((data: any) => {
-      //TODO
-      const token = data.access_token;
-      const jwtData = jwtDecode(token) as JwtState;
-      console.log(data);
-    });
+    authServices
+      .loginService(email, password)
+      .then((response) => {
+        // Set user context
+        setUser(response.data);
+        setIsAuthenticated(true);
+        navigate("/my-requests");
+      })
+      .catch(function (error: any) {
+        console.log(error);
+      });
   };
 
+  // Logout
   const logout = async () => {
-    fetch(`${process.env.REACT_APP_API_URL}auth/patient/logout`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer {token}",
-      },
-    }).then(() => {
+    authServices.logoutService().then(() => {
       setUser(null);
     });
   };
@@ -42,6 +115,8 @@ export const AuthProvider = ({ children }: { children: ReactElement }) => {
     () => ({
       user,
       setUser,
+      isAuthenticated,
+      setIsAuthenticated,
       login,
       logout,
     }),

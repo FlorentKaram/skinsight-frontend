@@ -15,7 +15,7 @@ import Select from "@mui/material/Select";
 import { AuthType, PatientUser, Role, Sex } from "../models/user.model";
 import { useFormik } from "formik";
 import { patientRegisterValidationSchema } from "./validation";
-import { patientRegisterService } from "../services/auth.services";
+import { authServices } from "../services/auth.services";
 
 interface ChildProps {
   handleClose: () => void;
@@ -40,7 +40,7 @@ function RegisterDialog({ handleClose, setAuthType }: ChildProps) {
     },
     validationSchema: patientRegisterValidationSchema,
     onSubmit: (values) => {
-      patientRegisterService(values);
+      authServices.patientRegisterService(values);
     },
   });
 
@@ -158,7 +158,7 @@ function RegisterDialog({ handleClose, setAuthType }: ChildProps) {
             <Box>
               <TextField
                 sx={{ width: "calc(50% - 1)", mr: 2 }}
-                id="zipcode"
+                id="zipCode"
                 label="Code postal"
                 variant="standard"
                 value={formik.values.zipCode}

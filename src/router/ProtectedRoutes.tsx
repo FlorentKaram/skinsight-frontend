@@ -1,11 +1,11 @@
-import { ReactElement, useContext } from "react";
+import { ReactElement } from "react";
 import { Navigate } from "react-router-dom";
-import { AuthContext } from "../contexts/AuthContext";
+import { useAuth } from "./hooks/useAuth";
 
 export const ProtectedRoute = ({ children }: { children: ReactElement }) => {
-  const { user } = useContext(AuthContext);
-  if (!user) {
-    return <Navigate to="/home" />;
+  const { isAuthenticated } = useAuth();
+  if (!isAuthenticated) {
+    return <Navigate to="/" />;
   }
   return children;
 };

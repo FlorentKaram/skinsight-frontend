@@ -15,6 +15,9 @@ export const skinSightTheme = createTheme({
     info: {
       main: "#000",
     },
+    warning: {
+      main: "#ffec99",
+    },
   },
   typography: {
     fontFamily: "Inter, system-ui, Avenir, Helvetica, Arial, sans-serif",

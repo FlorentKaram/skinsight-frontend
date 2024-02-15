@@ -1,10 +1,6 @@
 import { useState } from "react";
-import { UserData } from "../../models/user.model";
 
-export const useLocalStorage = (
-  keyName: string,
-  defaultValue: UserData | null
-) => {
+export const useLocalStorage = (keyName: string, defaultValue: boolean) => {
   const [storedValue, setStoredValue] = useState(() => {
     try {
       const value = window.localStorage.getItem(keyName);
@@ -18,7 +14,7 @@ export const useLocalStorage = (
       return defaultValue;
     }
   });
-  const setValue = (newValue: UserData | null) => {
+  const setValue = (newValue: boolean | null) => {
     try {
       window.localStorage.setItem(keyName, JSON.stringify(newValue));
     } catch (err) {}

@@ -15,7 +15,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { professionalRegisterValidationSchema } from "./validation";
 import { useFormik } from "formik";
-import { professionalRegisterService } from "../services/auth.services";
+import { authServices } from "../services/auth.services";
 
 interface ChildProps {
   handleClose: () => void;
@@ -40,7 +40,7 @@ function ProfessionalRegisterDialog({ handleClose, setAuthType }: ChildProps) {
     },
     validationSchema: professionalRegisterValidationSchema,
     onSubmit: (values) => {
-      professionalRegisterService(values);
+      authServices.professionalRegisterService(values);
     },
   });
 
@@ -139,7 +139,7 @@ function ProfessionalRegisterDialog({ handleClose, setAuthType }: ChildProps) {
           <Box>
             <TextField
               sx={{ width: "calc(50% - 1)", mr: 2 }}
-              id="zipcode"
+              id="zipCode"
               label="Code postal"
               variant="standard"
               value={formik.values.zipCode}

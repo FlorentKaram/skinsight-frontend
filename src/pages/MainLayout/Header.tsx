@@ -1,13 +1,14 @@
 import { Box } from "@mui/material";
 import { useNavigate } from "react-router";
 import { indigo } from "@mui/material/colors";
+import { useTheme } from "@mui/material/styles";
 
 function Header() {
-  const navigate = useNavigate();
+  const theme = useTheme();
   return (
     <Box
       sx={{
-        backgroundColor: indigo.A200,
+        backgroundColor: theme.palette.primary.main,
         width: "100%",
         position: "fixed",
         color: "white",

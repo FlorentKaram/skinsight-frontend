@@ -1,18 +1,23 @@
-import { createContext, Dispatch, SetStateAction } from "react";
-import { User } from "../models/auth";
+import { createContext } from "react";
+import { Role, UserData } from "../models/user.model";
 
 interface AuthContextType {
-  users: User[];
-  setUsers: Dispatch<SetStateAction<User[]>>;
-  isConnected: boolean;
-  setIsConnected: Dispatch<SetStateAction<boolean>>;
+  user: { data: UserData; token: string };
+  setUser: (user: { data: UserData; token: string }) => void;
+  login: (email: string, password: string) => Promise<void>;
+  logout: () => Promise<void>;
 }
 
 const defaultAuthContext = {
-  users: [{ username: "cyril", password: "pwd" }],
-  setUsers: () => {},
-  isConnected: true,
-  setIsConnected: () => {},
+  id: "0",
+  role: Role.PATIENT,
+  firstName: "",
+  lastName: "",
 };
 
-export const AuthContext = createContext<AuthContextType>(defaultAuthContext);
+export const AuthContext = createContext<AuthContextType>({
+  user: { data: defaultAuthContext, token: "" },
+  setUser: () => {},
+  login: async (email: string, password: string) => {},
+  logout: async () => {},
+});

@@ -13,15 +13,27 @@ import { useFormik } from "formik";
 import { useState } from "react";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import { consulatationsServices } from "../../services/consultations.services";
+import { useAuth } from "../../router/hooks/useAuth";
+import {
+  QueryObserverResult,
+  RefetchOptions,
+  RefetchQueryFilters,
+} from "react-query";
+import { Consultation } from "../../models/consultation.model";
 
 interface ChildProps {
   open: boolean;
   handleClose: () => void;
+  refetch: <TPageData>(
+    options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined
+  ) => Promise<QueryObserverResult<Consultation[] | null, unknown>>;
 }
 
-function CreateRequestDialog({ open, handleClose }: ChildProps) {
+function CreateRequestDialog({ open, handleClose, refetch }: ChildProps) {
+  const { user } = useAuth();
   const [postImage, setPostImage] = useState({
     myFile: "",
+    title: "",
   });
   const formik = useFormik({
     initialValues: {
@@ -31,12 +43,18 @@ function CreateRequestDialog({ open, handleClose }: ChildProps) {
     },
     onSubmit: async (values) => {
       console.log(values, postImage);
-      consulatationsServices
-        .createConsultation({
-          ...values,
-          file: postImage.myFile,
-        })
-        .then(() => handleClose());
+      if (user) {
+        consulatationsServices
+          .createConsultation({
+            ...values,
+            patientId: user.userId,
+            file: postImage.myFile,
+          })
+          .then(() => {
+            refetch();
+            handleClose();
+          });
+      }
     },
   });
 
@@ -58,21 +76,9 @@ function CreateRequestDialog({ open, handleClose }: ChildProps) {
     const base64 = (await convertToBase64(file)) as string;
     console.log(base64);
 
-    setPostImage({ ...postImage, myFile: base64 });
+    setPostImage({ myFile: base64, title: file.name });
     e.target.value = null;
   };
-
-  const VisuallyHiddenInput = styled("input")({
-    clip: "rect(0 0 0 0)",
-    clipPath: "inset(50%)",
-    height: 1,
-    overflow: "hidden",
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    whiteSpace: "nowrap",
-    width: 1,
-  });
 
   return (
     <Dialog open={open}>
@@ -116,15 +122,33 @@ function CreateRequestDialog({ open, handleClose }: ChildProps) {
             tabIndex={-1}
             startIcon={<AttachFileIcon />}
           >
-            Upload file
-            <VisuallyHiddenInput
+            {postImage.title === "" ? "Upload file" : postImage.title}
+            <input
+              style={{
+                clip: "rect(0 0 0 0)",
+                clipPath: "inset(50%)",
+                height: 1,
+                overflow: "hidden",
+                position: "absolute",
+                bottom: 0,
+                left: 0,
+                whiteSpace: "nowrap",
+                width: 1,
+              }}
               type="file"
               onChange={(e) => handleFileUpload(e)}
             />
           </Button>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Auler</Button>
+          <Button
+            onClick={() => {
+              handleClose();
+              setPostImage({ myFile: "", title: "" });
+            }}
+          >
+            Annuler
+          </Button>
           <Button variant="contained" type="submit">
             Valider
           </Button>

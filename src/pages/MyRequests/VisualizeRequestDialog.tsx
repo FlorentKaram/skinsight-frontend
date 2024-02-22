@@ -4,13 +4,18 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  FormControlLabel,
-  Switch,
-  TextField,
 } from "@mui/material";
-import AttachFileIcon from "@mui/icons-material/AttachFile";
-import { useQuery } from "react-query";
 import { ConsultationForm } from "../../models/consultation.model";
+import { useEffect, useState } from "react";
+import {
+  DateCalendar,
+  DatePicker,
+  LocalizationProvider,
+  StaticDatePicker,
+} from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { appointmentsServices } from "../../services/appointments.service";
+import { useAuth } from "../../router/hooks/useAuth";
 
 interface ChildProps {
   open: boolean;
@@ -23,14 +28,65 @@ function VisualizeRequestDialog({
   handleClose,
   consultation,
 }: ChildProps) {
+  const { user } = useAuth();
+  const adapter = new AdapterDayjs();
+  const today = adapter.date(new Date()) as unknown as Date;
+  const [displayAppointment, setDisplayAppointment] = useState(false);
+  const [appointmentDate, setAppointmentDate] = useState<Date | null>(today);
+
+  useEffect(() => {
+    console.log(appointmentDate);
+  }, [appointmentDate]);
+
+  const handleOpenAppointment = () => {
+    setDisplayAppointment(true);
+  };
+  const handleCloseAppointment = () => {
+    setDisplayAppointment(false);
+  };
+
+  const submitAppointment = () => {
+    console.log(appointmentDate);
+    if (user) {
+      appointmentsServices.createAppointment({
+        date: appointmentDate!.toISOString(),
+        patientId: user.userId,
+      });
+    } else {
+      console.log("no user");
+    }
+  };
+
   return consultation ? (
     <Dialog open={open}>
       <DialogTitle>Préconsultation - {consultation.object}</DialogTitle>
-      <DialogContent>{consultation.description}</DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose}>Fermer</Button>
-        <Button variant="contained">Prendre rendez-vous</Button>
-      </DialogActions>
+
+      {displayAppointment ? (
+        <>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DateCalendar
+              value={appointmentDate}
+              onChange={(value) => setAppointmentDate(value)}
+            />
+          </LocalizationProvider>
+          <DialogActions>
+            <Button onClick={handleCloseAppointment}>Retour</Button>
+            <Button variant="contained" onClick={submitAppointment}>
+              Valider
+            </Button>
+          </DialogActions>
+        </>
+      ) : (
+        <>
+          <DialogContent>{consultation.description}</DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Fermer</Button>
+            <Button variant="contained" onClick={handleOpenAppointment}>
+              Prendre rendez-vous
+            </Button>
+          </DialogActions>
+        </>
+      )}
     </Dialog>
   ) : null;
 }

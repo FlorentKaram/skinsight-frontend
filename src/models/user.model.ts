@@ -1,3 +1,6 @@
+import { Appointment } from "./appointment.model";
+import { Consultation } from "./consultation.model";
+
 export interface UserData {
   userId: string;
   role: Role;
@@ -30,7 +33,17 @@ interface RppsNumber {
   rppsNumber: number | undefined;
 }
 
-export type User = UserData & UserForm & SecuNumber & RppsNumber & UserMetaData;
+export type User = UserData &
+  UserForm &
+  SecuNumber &
+  RppsNumber &
+  UserMetaData & {
+    consultationsPatient: Consultation[];
+    consultationsGeneralist: Consultation[];
+    consultationsDermatologist: Consultation[];
+    appointmentsPatient: Appointment[];
+    appointmentsDermatologist: Appointment[];
+  };
 
 export type PatientUser = UserData & UserForm & SecuNumber;
 

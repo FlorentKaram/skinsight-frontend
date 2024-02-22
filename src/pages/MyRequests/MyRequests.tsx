@@ -1,3 +1,4 @@
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import {
   Box,
   Button,
@@ -8,25 +9,20 @@ import {
   useTheme,
 } from "@mui/material";
 import { useState } from "react";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import CreateRequestDialog from "./CreateRequestDialog";
 import { useQuery } from "react-query";
+import {
+  Consultation,
+  ConsultationForm,
+} from "../../models/consultation.model";
+import { Role } from "../../models/user.model";
+import { useAuth } from "../../router/hooks/useAuth";
 import { consulatationsServices } from "../../services/consultations.services";
-import { ConsultationForm } from "../../models/consultation.model";
+import CreateRequestDialog from "./CreateRequestDialog";
 import VisualizeRequestDialog from "./VisualizeRequestDialog";
 
 function MyRequests() {
   const theme = useTheme();
-  const [doctors] = useState<string[]>([
-    "Dr Maboul",
-    "Dr House",
-    "Dr Who",
-    "Dr Strange",
-    "Dr Jekyll",
-    "Dr Hyde",
-    "Dr Dolittle",
-    "Dr Watson",
-  ]);
+  const { user } = useAuth();
 
   // Dialog
   const [openCreationDialog, setOpenCreationDialog] = useState(false);
@@ -44,17 +40,37 @@ function MyRequests() {
     setOpenVisualizationDialog(false);
   };
 
-  // Fetch data
-  const { isLoading, error, data } = useQuery("consultations", () =>
-    consulatationsServices.getConsultations().then((res) => {
-      return res.data as ConsultationForm[];
-    })
+  const [consultationSelected, setConsultationSelected] =
+    useState<ConsultationForm>();
+
+  // Fetch requests
+  const { isLoading, error, data, refetch } = useQuery(
+    "consultations",
+    (): Promise<Consultation[]> | null => {
+      switch (user!.role) {
+        case Role.PATIENT:
+          return consulatationsServices
+            .getConsultationsByPatient(user!.userId)
+            .then((res) => res.data);
+        case Role.GENERALIST:
+          return consulatationsServices
+            .getConsultationsByGeneralist(user!.userId)
+            .then((res) => res.data);
+        case Role.DERMATOLOGIST:
+          return consulatationsServices
+            .getConsultationsByDermatologist(user!.userId)
+            .then((res) => res.data);
+        default:
+          return null;
+      }
+    },
+    { refetchOnWindowFocus: false }
   );
 
   if (isLoading) return "Loading...";
 
   if (error) return "An error has occurred: ";
-
+  console.log(data);
   return data ? (
     <Box>
       <h2>Historique</h2>
@@ -65,7 +81,10 @@ function MyRequests() {
               <IconButton
                 edge="end"
                 aria-label="view"
-                onClick={handleClickOpenVisualizationDialog}
+                onClick={() => {
+                  setConsultationSelected(consultation);
+                  handleClickOpenVisualizationDialog();
+                }}
               >
                 <VisibilityIcon />
               </IconButton>
@@ -77,15 +96,15 @@ function MyRequests() {
             }}
             key={i}
           >
-            <VisualizeRequestDialog
-              open={openVisualizationDialog}
-              handleClose={handleCloseVisualizationDialog}
-              consultation={consultation}
-            />
             <ListItemText primary={consultation.object} />
           </ListItem>
         ))}
       </List>
+      <VisualizeRequestDialog
+        open={openVisualizationDialog}
+        handleClose={handleCloseVisualizationDialog}
+        consultation={consultationSelected as ConsultationForm}
+      />
       <Box display="flex" justifyContent="center">
         <Button
           variant="contained"
@@ -108,6 +127,7 @@ function MyRequests() {
         <CreateRequestDialog
           open={openCreationDialog}
           handleClose={handleCloseCreationDialog}
+          refetch={refetch}
         />
       </Box>
     </Box>

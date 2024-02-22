@@ -20,4 +20,4 @@ EXPOSE 80
 
 WORKDIR /usr/share/nginx/html
 
-COPY --from=build /usr/src/app/dist /usr/share/nginx/html/dev
+COPY --from=build /usr/src/app/dist /usr/share/nginx/html/dev/

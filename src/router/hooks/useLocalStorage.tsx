@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { UserCookie } from "../../models/user.model";
 
-export const useLocalStorage = (keyName: string, defaultValue: boolean) => {
+export const useLocalStorage = (keyName: string, defaultValue: UserCookie) => {
   const [storedValue, setStoredValue] = useState(() => {
     try {
       const value = window.localStorage.getItem(keyName);

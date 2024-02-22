@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { PatientUser, ProfessionalUser } from "../models/user.model";
 
 export const axiosInstance = axios.create({
@@ -23,10 +23,10 @@ export const authServices = {
       .post("auth/patient/register", {
         ...patient,
       })
-      .then((response) => {
+      .then((response: AxiosResponse) => {
         return response.data;
       })
-      .catch(function (error: any) {
+      .catch(function (error: Error) {
         console.log(error);
       });
   },
@@ -36,10 +36,10 @@ export const authServices = {
       .post("auth/professional/register", {
         ...professional,
       })
-      .then((response) => {
+      .then((response: AxiosResponse) => {
         return response.data;
       })
-      .catch(function (error: any) {
+      .catch(function (error: Error) {
         console.log(error);
       });
   },

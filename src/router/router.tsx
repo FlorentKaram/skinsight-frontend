@@ -1,12 +1,9 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import MainLayout from "../pages/MainLayout/MainLayout";
-import { ProtectedRoute } from "./ProtectedRoutes";
+import { AuthenticatedRoute, AuthorizedRoute } from "./ProtectedRoutes";
 import Home from "../pages/Home/Home";
 import { AuthLayout } from "./AuthLayout";
-import MyRequests from "../pages/MyRequests/MyRequests";
-import Profile from "../pages/Profile";
-import MyAppointments from "../pages/MyAppointments";
 
 export const router = createBrowserRouter([
   {
@@ -22,15 +19,11 @@ export const router = createBrowserRouter([
           },
           {
             element: (
-              <ProtectedRoute>
+              <AuthenticatedRoute>
                 <MainLayout />
-              </ProtectedRoute>
+              </AuthenticatedRoute>
             ),
-            children: [
-              { element: <MyRequests />, path: "my-requests" },
-              { element: <MyAppointments />, path: "my-appointments" },
-              { element: <Profile />, path: "my-profile" },
-            ],
+            children: AuthorizedRoute(),
           },
         ],
       },

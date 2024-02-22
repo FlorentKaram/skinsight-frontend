@@ -4,9 +4,6 @@ import MainLayout from "../pages/MainLayout/MainLayout";
 import { AuthenticatedRoute, AuthorizedRoute } from "./ProtectedRoutes";
 import Home from "../pages/Home/Home";
 import { AuthLayout } from "./AuthLayout";
-import MyRequests from "../pages/MyRequests/MyRequests";
-import Profile from "../pages/Profile";
-import MyAppointments from "../pages/MyAppointments/MyAppointments";
 
 export const router = createBrowserRouter([
   {

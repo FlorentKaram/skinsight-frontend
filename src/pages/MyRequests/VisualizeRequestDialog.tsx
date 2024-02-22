@@ -7,12 +7,7 @@ import {
 } from "@mui/material";
 import { ConsultationForm } from "../../models/consultation.model";
 import { useEffect, useState } from "react";
-import {
-  DateCalendar,
-  DatePicker,
-  LocalizationProvider,
-  StaticDatePicker,
-} from "@mui/x-date-pickers";
+import { DateCalendar, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { appointmentsServices } from "../../services/appointments.service";
 import { useAuth } from "../../router/hooks/useAuth";

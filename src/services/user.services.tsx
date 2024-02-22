@@ -1,4 +1,3 @@
-import { User } from "../models/user.model";
 import { axiosInstance } from "./auth.services";
 
 export const userServices = {

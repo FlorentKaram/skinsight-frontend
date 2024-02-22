@@ -1,27 +1,11 @@
 import { Box } from "@mui/material";
-import { useEffect, useState } from "react";
-import { PatientUser, Role, Sex } from "../models/user.model";
-import ProfileInfoField from "../globalcomponents/ProfileInfoField";
+import { PatientUser } from "../models/user.model";
 import { useAuth } from "../router/hooks/useAuth";
 import { userServices } from "../services/user.services";
 import { useQuery } from "react-query";
 
 function Profile() {
   const { user } = useAuth();
-  const [patientUser, setPatientUser] = useState<PatientUser>({
-    userId: "1",
-    email: "",
-    password: "",
-    role: Role.PATIENT,
-    firstName: "John",
-    lastName: "",
-    dateOfBirth: new Date(),
-    sex: Sex.MALE,
-    address: "",
-    zipCode: 0,
-    city: "",
-    secuNumber: 0,
-  });
 
   const { isLoading, error, data } = useQuery("user", () =>
     userServices.getById(user?.userId ?? "").then((res) => {

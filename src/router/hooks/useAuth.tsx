@@ -4,6 +4,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { Role } from "../../models/user.model";
 import { authServices, axiosInstance } from "../../services/auth.services";
 import { useLocalStorage } from "./useLocalStorage";
+import { InternalAxiosRequestConfig } from "axios";
 
 export const AuthProvider = ({ children }: { children: ReactElement }) => {
   // const [user, setUser] = useState<UserCookie | null>({
@@ -25,13 +26,13 @@ export const AuthProvider = ({ children }: { children: ReactElement }) => {
 
   //Intercept all requests and provide the token if it exists
   axiosInstance.interceptors.request.use(
-    (config) => {
+    (config: InternalAxiosRequestConfig) => {
       if (user && user.access_token) {
         config.headers["Authorization"] = `Bearer ${user.access_token}`;
       }
       return config;
     },
-    (error) => {
+    (error: Error) => {
       return Promise.reject(error);
     }
   );

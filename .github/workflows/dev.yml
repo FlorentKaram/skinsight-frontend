@@ -32,7 +32,7 @@ jobs:
           privateKey: ${{ secrets.SSH_KEY }}
           debug: false
           command: |
-            cd /projects/skinsight/skinsight-frontend/
+            cd /projects/skinsight/skinsight-frontend-dev/
             docker login ghcr.io -u ${{ secrets.GIT_USERNAME }} -p ${{ secrets.GIT_TOKEN }}
             git remote set-url origin https://${{ secrets.GIT_USERNAME }}:${{ secrets.GIT_TOKEN }}@github.com/FlorentKaram/skinsight-frontend.git
             git pull

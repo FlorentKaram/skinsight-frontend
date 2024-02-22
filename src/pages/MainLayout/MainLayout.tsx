@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { AuthorizedRoute } from "../../router/ProtectedRoutes";
+
 import Header from "./Header";
 import { Outlet } from "react-router-dom";
 

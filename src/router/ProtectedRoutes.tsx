@@ -1,10 +1,10 @@
 import { ReactElement } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
-import { useAuth } from "./hooks/useAuth";
+import { Navigate } from "react-router-dom";
 import { Role } from "../models/user.model";
-import MyRequests from "../pages/MyRequests/MyRequests";
 import MyAppointments from "../pages/MyAppointments/MyAppointments";
+import MyRequests from "../pages/MyRequests/MyRequests";
 import Profile from "../pages/Profile";
+import { useAuth } from "./hooks/useAuth";
 
 export const AuthenticatedRoute = ({
   children,

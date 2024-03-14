@@ -9,66 +9,61 @@ import MyAppointments from "../pages/MyAppointments/MyAppointments";
 import Profile from "../pages/Profile";
 import Messages from "../pages/Messages/Messages";
 
-export const router = createBrowserRouter(
-  [
-    {
-      element: <AuthLayout />,
-      children: [
-        {
-          element: <App />,
-          path: "/",
-          children: [
-            {
-              path: "/",
-              element: <Home />,
-            },
-            {
-              element: (
-                <AuthenticatedRoute>
-                  <MainLayout />
-                </AuthenticatedRoute>
-              ),
-              children: [
-                {
-                  path: "my-requests",
-                  element: (
-                    <AuthorizedRoute>
-                      <Consultations />
-                    </AuthorizedRoute>
-                  ),
-                },
-                {
-                  path: "my-appointments",
-                  element: (
-                    <AuthorizedRoute>
-                      <MyAppointments />
-                    </AuthorizedRoute>
-                  ),
-                },
-                {
-                  path: "messages",
-                  element: (
-                    <AuthorizedRoute>
-                      <Messages />
-                    </AuthorizedRoute>
-                  ),
-                },
-                {
-                  path: "my-profile",
-                  element: (
-                    <AuthorizedRoute>
-                      <Profile />
-                    </AuthorizedRoute>
-                  ),
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    },
-  ],
+export const router = createBrowserRouter([
   {
-    basename: "/dev",
-  }
-);
+    element: <AuthLayout />,
+    children: [
+      {
+        element: <App />,
+        path: "/",
+        children: [
+          {
+            path: "/",
+            element: <Home />,
+          },
+          {
+            element: (
+              <AuthenticatedRoute>
+                <MainLayout />
+              </AuthenticatedRoute>
+            ),
+            children: [
+              {
+                path: "my-requests",
+                element: (
+                  <AuthorizedRoute>
+                    <Consultations />
+                  </AuthorizedRoute>
+                ),
+              },
+              {
+                path: "my-appointments",
+                element: (
+                  <AuthorizedRoute>
+                    <MyAppointments />
+                  </AuthorizedRoute>
+                ),
+              },
+              {
+                path: "messages",
+                element: (
+                  <AuthorizedRoute>
+                    <Messages />
+                  </AuthorizedRoute>
+                ),
+              },
+              {
+                path: "my-profile",
+                element: (
+                  <AuthorizedRoute>
+                    <Profile />
+                  </AuthorizedRoute>
+                ),
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+]);

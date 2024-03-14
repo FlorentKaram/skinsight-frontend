@@ -7,14 +7,6 @@ import { useLocalStorage } from "./useLocalStorage";
 import { InternalAxiosRequestConfig } from "axios";
 
 export const AuthProvider = ({ children }: { children: ReactElement }) => {
-  // const [user, setUser] = useState<UserCookie | null>({
-  //   userId: "e8cb6c59-0001-4ef3-a2ab-b62c764e3020",
-  //   role: Role.PATIENT,
-  //   firstName: "",
-  //   lastName: "",
-  //   access_token: "",
-  // });
-
   const [user, setUser] = useLocalStorage("user", {
     userId: "",
     role: Role.PATIENT,

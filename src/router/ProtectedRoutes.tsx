@@ -19,18 +19,24 @@ export const AuthenticatedRoute = ({
   return children;
 };
 
+export const RedirectHomeRoute = ({ children }: { children: ReactElement }) => {
+  const { user } = useAuth();
+  if (user) {
+    return <Navigate to="/my-requests" />;
+  }
+  return children;
+};
+
 const PATIENT_ROUTES: ReactElement[] = [
   <Consultations />,
   <MyAppointments />,
   <Profile />,
 ];
-
 const GENERALIST_ROUTES: ReactElement[] = [
   <Consultations />,
   <Messages />,
   <Profile />,
 ];
-
 const DERMATOLOGIST_ROUTES: ReactElement[] = [
   <Consultations />,
   <Messages />,

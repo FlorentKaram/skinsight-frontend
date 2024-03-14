@@ -40,7 +40,9 @@ function RegisterDialog({ handleClose, setAuthType }: ChildProps) {
     },
     validationSchema: patientRegisterValidationSchema,
     onSubmit: (values) => {
-      authServices.patientRegisterService(values);
+      authServices.patientRegisterService(values).then(() => {
+        handleClose();
+      });
     },
   });
 

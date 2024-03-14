@@ -1,7 +1,11 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import MainLayout from "../pages/MainLayout/MainLayout";
-import { AuthenticatedRoute, AuthorizedRoute } from "./ProtectedRoutes";
+import {
+  AuthenticatedRoute,
+  AuthorizedRoute,
+  RedirectHomeRoute,
+} from "./ProtectedRoutes";
 import Home from "../pages/Home/Home";
 import { AuthLayout } from "./AuthLayout";
 import Consultations from "../pages/MyRequests/Consultations";
@@ -20,7 +24,12 @@ export const router = createBrowserRouter(
           children: [
             {
               path: "/",
-              element: <Home />,
+
+              element: (
+                <RedirectHomeRoute>
+                  <Home />
+                </RedirectHomeRoute>
+              ),
             },
             {
               element: (

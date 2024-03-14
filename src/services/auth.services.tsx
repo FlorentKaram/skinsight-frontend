@@ -20,7 +20,7 @@ export const authServices = {
 
   patientRegisterService: (patient: PatientUser) => {
     return axiosInstance
-      .post("auth/patient/register", {
+      .post("auth/register", {
         ...patient,
       })
       .then((response: AxiosResponse) => {
@@ -33,7 +33,7 @@ export const authServices = {
 
   professionalRegisterService: (professional: ProfessionalUser) => {
     return axiosInstance
-      .post("auth/professional/register", {
+      .post("auth/register", {
         ...professional,
       })
       .then((response: AxiosResponse) => {

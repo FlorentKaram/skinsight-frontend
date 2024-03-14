@@ -4,9 +4,10 @@ import MainLayout from "../pages/MainLayout/MainLayout";
 import { AuthenticatedRoute, AuthorizedRoute } from "./ProtectedRoutes";
 import Home from "../pages/Home/Home";
 import { AuthLayout } from "./AuthLayout";
-import MyRequests from "../pages/MyRequests/MyRequests";
+import Consultations from "../pages/MyRequests/Consultations";
 import MyAppointments from "../pages/MyAppointments/MyAppointments";
 import Profile from "../pages/Profile";
+import Messages from "../pages/Messages/Messages";
 
 export const router = createBrowserRouter([
   {
@@ -31,7 +32,7 @@ export const router = createBrowserRouter([
                 path: "my-requests",
                 element: (
                   <AuthorizedRoute>
-                    <MyRequests />
+                    <Consultations />
                   </AuthorizedRoute>
                 ),
               },
@@ -40,6 +41,14 @@ export const router = createBrowserRouter([
                 element: (
                   <AuthorizedRoute>
                     <MyAppointments />
+                  </AuthorizedRoute>
+                ),
+              },
+              {
+                path: "messages",
+                element: (
+                  <AuthorizedRoute>
+                    <Messages />
                   </AuthorizedRoute>
                 ),
               },

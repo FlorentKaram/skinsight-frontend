@@ -26,7 +26,7 @@ interface UserMetaData {
 }
 
 interface SecuNumber {
-  secuNumber: number | undefined;
+  secuNumber?: number | undefined;
 }
 
 interface RppsNumber {

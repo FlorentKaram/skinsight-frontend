@@ -1,14 +1,29 @@
 import { Box } from "@mui/material";
 
-import Header from "./Header";
+import Header from "../../globalcomponents/Header/Header";
 import { Outlet } from "react-router-dom";
+import Footer from "../../globalcomponents/Footer";
 
 function MainLayout() {
   return (
     <Box>
-      <Header />
-      <Box sx={{ pt: 10, px: "15%" }}>
-        <Outlet />
+      <Box
+        sx={{
+          zIndex: "100",
+          overflowY: "scroll",
+          position: "relative",
+          minHeight: "100vh",
+        }}
+      >
+        <Header />
+        <Box
+          sx={{
+            px: "15%",
+          }}
+        >
+          <Outlet />
+        </Box>
+        <Footer />
       </Box>
     </Box>
   );

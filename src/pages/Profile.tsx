@@ -9,7 +9,7 @@ function Profile() {
 
   const { isLoading, error, data } = useQuery("user", () =>
     userServices.getById(user?.userId ?? "").then((res) => {
-      return res.data as PatientUser;
+      return res as PatientUser;
     })
   );
 

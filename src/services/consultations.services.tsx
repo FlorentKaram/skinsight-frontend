@@ -1,4 +1,5 @@
-import { ConsultationForm } from "../models/consultation.model";
+import { Consultation, ConsultationForm } from "../models/consultation.model";
+import { Role } from "../models/user.model";
 import { axiosInstance } from "./auth.services";
 
 export const consulatationsServices = {
@@ -9,9 +10,23 @@ export const consulatationsServices = {
     });
   },
 
-  // Récupérer une consultation
-  getConsultation: (id: string): Promise<any> => {
-    return axiosInstance.get(`consultations/${id}`);
+  getConsultationsByUser: (id: string, role: Role): Promise<Consultation[]> => {
+    switch (role) {
+      case Role.PATIENT:
+        return consulatationsServices
+          .getConsultationsByPatient(id)
+          .then((res) => res.data);
+      case Role.GENERALIST:
+        return consulatationsServices
+          .getConsultationsByGeneralist(id)
+          .then((res) => res.data);
+      case Role.DERMATOLOGIST:
+        return consulatationsServices
+          .getConsultationsByDermatologist(id)
+          .then((res) => res.data);
+      default:
+        return Promise.resolve([]);
+    }
   },
 
   //Récupérer les consultations d'un patient
@@ -29,8 +44,23 @@ export const consulatationsServices = {
     return axiosInstance.get(`consultations/dermatologist/${id}`);
   },
 
-  // Récupérer toutes les consultations
-  getConsultations: (): Promise<any> => {
-    return axiosInstance.get("consultations");
+  //Récupérer une nouvelle consultation pour un généraliste
+  getNewConsultationForGeneralist: (id: string): Promise<any> => {
+    return axiosInstance.post(`users/generalist/${id}/getConsultation`);
+  },
+
+  //Récupérer une nouvelle consultation pour un dermatologue
+  getNewConsultationForDermatologist: (id: string): Promise<any> => {
+    return axiosInstance.post(`users/dermatologist/${id}/getConsultation`);
+  },
+
+  //update consultation by id
+  updateConsultation: (
+    id: string,
+    consultation: Consultation
+  ): Promise<any> => {
+    return axiosInstance.patch(`consultations/${id}`, {
+      ...consultation,
+    });
   },
 };

@@ -7,6 +7,7 @@ export interface Appointment extends AppointmentForm {
   id: string;
   date: string;
   doctor: string;
-  patient: string;
-  status: string;
+  patientId: string;
+  dermatologistId: string;
+  consultationId: string;
 }

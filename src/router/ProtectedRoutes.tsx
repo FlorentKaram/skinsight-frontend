@@ -2,9 +2,10 @@ import { ReactElement } from "react";
 import { Navigate } from "react-router-dom";
 import { Role } from "../models/user.model";
 import MyAppointments from "../pages/MyAppointments/MyAppointments";
-import MyRequests from "../pages/MyRequests/MyRequests";
+import Consultations from "../pages/MyRequests/Consultations";
 import Profile from "../pages/Profile";
 import { useAuth } from "./hooks/useAuth";
+import Messages from "../pages/Messages/Messages";
 
 export const AuthenticatedRoute = ({
   children,
@@ -19,20 +20,20 @@ export const AuthenticatedRoute = ({
 };
 
 const PATIENT_ROUTES: ReactElement[] = [
-  <MyRequests />,
+  <Consultations />,
   <MyAppointments />,
   <Profile />,
 ];
 
 const GENERALIST_ROUTES: ReactElement[] = [
-  <MyRequests />,
-  <MyAppointments />,
+  <Consultations />,
+  <Messages />,
   <Profile />,
 ];
 
 const DERMATOLOGIST_ROUTES: ReactElement[] = [
-  <MyRequests />,
-  <MyAppointments />,
+  <Consultations />,
+  <Messages />,
   <Profile />,
 ];
 

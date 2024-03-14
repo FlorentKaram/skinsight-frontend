@@ -207,7 +207,10 @@ function Home() {
                     alignItems={"center"}
                     m={2}
                   >
-                    <img src="/img/doctor_icon.png" style={{ width: 100 }} />
+                    <img
+                      src="/dev/img/doctor_icon.png"
+                      style={{ width: 100 }}
+                    />
                   </Box>
                   <Box
                     width={130}
@@ -219,7 +222,7 @@ function Home() {
                     alignItems={"center"}
                     m={2}
                   >
-                    <img src="/img/mechanism.png" style={{ width: 100 }} />
+                    <img src="/dev/img/mechanism.png" style={{ width: 100 }} />
                   </Box>
                 </Box>
                 <Box mt={2} width={300}>
@@ -246,7 +249,7 @@ function Home() {
                     alignItems={"center"}
                     m={2}
                   >
-                    <img src="/img/heart.png" style={{ width: 100 }} />
+                    <img src="/dev/img/heart.png" style={{ width: 100 }} />
                   </Box>
                   <Box
                     width={130}
@@ -258,7 +261,7 @@ function Home() {
                     alignItems={"center"}
                     m={2}
                   >
-                    <img src="/img/vaccin.png" style={{ width: 100 }} />
+                    <img src="/dev/img/vaccin.png" style={{ width: 100 }} />
                   </Box>
                 </Box>
                 <Box mt={2} width={300}>
